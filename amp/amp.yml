@@ -329,11 +329,11 @@ objects:
           resources:
             limits:
               # JA Bride:  dropped down to 1Gi RAM and 1 CPU  because our course deployments are not intended to be production
-              cpu: 750m
+              cpu: 150m
               memory: 1Gi
             requests:
               # JA Bride:  dropped down to .5Gi RAM and .5 CPU  because our course deployments are not intended to be production
-              cpu: 500m
+              cpu: 100m
               memory: 512Mi
           readinessProbe:
             exec:
@@ -342,14 +342,14 @@ objects:
                 - "bash"
                 - "-c"
                 - "redis-cli set liveness-probe \"`date`\" | grep OK"
-            initialDelaySeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 100
+            periodSeconds: 300
             timeoutSeconds: 1
           livenessProbe:
             tcpSocket:
               port: 6379
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 100
+            periodSeconds: 100
           volumeMounts:
           - name: backend-redis-storage
             mountPath: "/var/lib/redis/data"
@@ -428,14 +428,14 @@ objects:
           name: backend-listener
           resources:
             limits:
-              cpu: 750m
+              cpu: 150m
               memory: 700Mi
             requests:
-              cpu: 500m
+              cpu: 100m
               memory: 550Mi
           livenessProbe:
             initialDelaySeconds: 30
-            periodSeconds: 10
+            periodSeconds: 60
             tcpSocket:
               port: 3000
           readinessProbe:
@@ -443,7 +443,7 @@ objects:
               path: "/status"
               port: 3000
             initialDelaySeconds: 30
-            timeoutSeconds: 5
+            timeoutSeconds: 60
           ports:
           - containerPort: 3000
             protocol: TCP
@@ -582,10 +582,10 @@ objects:
           resources:
             limits:
               # JA Bride:  dropped to 500m
-              cpu: 500m
+              cpu: 100m
               memory: 300Mi
             requests:
-              cpu: 150m
+              cpu: 50m
               memory: 50Mi
     triggers:
     - type: ConfigChange
@@ -657,9 +657,9 @@ objects:
             limits:
               # JA Bride:  changed because limit defined in limitrange is 6Gi
               memory: 2Gi
-              cpu: 500m
+              cpu: 100m
             requests:
-              cpu: 150m
+              cpu: 50m
               memory: 256Mi
           terminationMessagePath: /dev/termination-log
           volumeMounts:
@@ -674,14 +674,14 @@ objects:
                 - "bash"
                 - "-c"
                 - "redis-cli set liveness-probe \"`date`\" | grep OK"
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            initialDelaySeconds: 120
+            periodSeconds: 60
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
               port: 6379
-            initialDelaySeconds: 10
-            periodSeconds: 5
+            initialDelaySeconds: 200
+            periodSeconds: 20
         volumes:
         - name: system-redis-storage
           persistentVolumeClaim:
@@ -763,7 +763,7 @@ objects:
           resources:
             # JA Bride:  Dropping for non-production deployment
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: 512Mi
             requests:
               cpu: 80m
@@ -829,7 +829,7 @@ objects:
           name: memcache
           resources:
             limits:
-              cpu: 250m
+              cpu: 75m
               memory: 96Mi
             requests:
               cpu: 50m
@@ -840,7 +840,7 @@ objects:
                 - "sh"
                 - "-c"
                 - "echo version | nc $HOSTNAME 11211 | grep VERSION"
-            initialDelaySeconds: 10
+            initialDelaySeconds: 100
             periodSeconds: 30
             timeoutSeconds: 5
           livenessProbe:
@@ -979,14 +979,14 @@ objects:
             httpGet:
               path: /status/live
               port: 8090
-            initialDelaySeconds: 10
+            initialDelaySeconds: 100
             timeoutSeconds: 5
-            periodSeconds: 10
+            periodSeconds: 60
           readinessProbe:
             httpGet:
               path: /status/ready
               port: 8090
-            initialDelaySeconds: 15
+            initialDelaySeconds: 150
             timeoutSeconds: 5
             periodSeconds: 30
           ports:
@@ -1072,25 +1072,25 @@ objects:
           resources:
             # JA Bride:  Dropping for non-production deployment
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: 128Mi
             requests:
-              cpu: 256m
+              cpu: 75m
               memory: 64Mi
           livenessProbe:
             httpGet:
               path: /status/live
               port: 8090
-            initialDelaySeconds: 10
+            initialDelaySeconds: 100
             timeoutSeconds: 5
-            periodSeconds: 10
+            periodSeconds: 100
           readinessProbe:
             httpGet:
               path: /status/ready
               port: 8090
-            initialDelaySeconds: 15
+            initialDelaySeconds: 150
             timeoutSeconds: 5
-            periodSeconds: 30
+            periodSeconds: 300
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -1189,10 +1189,10 @@ objects:
             name: apicast-wildcard-router
             resources:
               limits:
-                cpu: 250m
+                cpu: 100m
                 memory: 64Mi
               requests:
-                cpu: 120m
+                cpu: 50m
                 memory: 32Mi
             ports:
             - containerPort: 8080
@@ -1356,17 +1356,17 @@ objects:
           resources:
             # JA Bride:  reducing resources limits and requests for non-prod deployments
             limits:
-              cpu: 1000m
+              cpu: 100m
               memory: 800Mi
             requests:
               cpu: 50m
               memory: 300Mi
           livenessProbe:
-            timeoutSeconds: 10
-            initialDelaySeconds: 20
+            timeoutSeconds: 100
+            initialDelaySeconds: 60
             tcpSocket:
               port: master
-            periodSeconds: 10
+            periodSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1375,9 +1375,9 @@ objects:
               httpHeaders:
               - name: X-Forwarded-Proto
                 value: https
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 300
+            timeoutSeconds: 100
+            periodSeconds: 100
           ports:
           - containerPort: 3002
             protocol: TCP
@@ -1395,17 +1395,17 @@ objects:
           resources:
             # JA Bride:  reducing resources limits and requests for non-prod deployments
             limits:
-              cpu: 1000m
+              cpu: 100m
               memory: 800Mi
             requests:
               cpu: 50m
               memory: 300Mi
           livenessProbe:
-            timeoutSeconds: 10
-            initialDelaySeconds: 20
+            timeoutSeconds: 100
+            initialDelaySeconds: 60
             tcpSocket:
               port: provider
-            periodSeconds: 10
+            periodSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1414,9 +1414,9 @@ objects:
               httpHeaders:
               - name: X-Forwarded-Proto
                 value: https
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 300
+            timeoutSeconds: 100
+            periodSeconds: 100
           ports:
           - containerPort: 3000
             protocol: TCP
@@ -1434,17 +1434,17 @@ objects:
           resources:
             # JA Bride:  reducing resources limits and requests for non-prod deployments
             limits:
-              cpu: 1000m
+              cpu: 100m
               memory: 800Mi
             requests:
               cpu: 50m
               memory: 300Mi
           livenessProbe:
-            timeoutSeconds: 10
-            initialDelaySeconds: 20
+            timeoutSeconds: 100
+            initialDelaySeconds: 60
             tcpSocket:
               port: developer
-            periodSeconds: 10
+            periodSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1453,9 +1453,9 @@ objects:
               httpHeaders:
               - name: X-Forwarded-Proto
                 value: https
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 300
+            timeoutSeconds: 100
+            periodSeconds: 100
           ports:
           - containerPort: 3001
             protocol: TCP
@@ -1600,10 +1600,10 @@ objects:
           resources:
             # JA Bride:  Dropping for non-production deployment
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: 1Gi
             requests:
-              cpu: 100m
+              cpu: 70m
               memory: 256Mi
           volumeMounts:
           - name: system-storage
@@ -1667,15 +1667,15 @@ objects:
             resources:
             # JA Bride:  reducing resources limits and requests for non-prod deployments
               limits:
-                cpu: 750m
+                cpu: 100m
                 memory: 1Gi
               requests:
-                cpu: 250m
+                cpu: 70m
                 memory: 256Mi
             readinessProbe:
               timeoutSeconds: 5
-              initialDelaySeconds: 10
-              periodSeconds: 30
+              initialDelaySeconds: 100
+              periodSeconds: 300
               exec:
                 command:
                   - /bin/sh
@@ -1685,8 +1685,8 @@ objects:
                     MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u
                     $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'
             livenessProbe:
-              initialDelaySeconds: 30
-              periodSeconds: 10
+              initialDelaySeconds: 300
+              periodSeconds: 100
               tcpSocket:
                 port: 3306
             env:
@@ -1858,10 +1858,10 @@ objects:
           resources:
             # JA Bride:  Dropping for non-production deployment
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: 512Mi
             requests:
-              cpu: 150m
+              cpu: 75m
               memory: 250M
           env:
             - name: RAILS_LOG_TO_STDOUT
@@ -1889,8 +1889,8 @@ objects:
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 10
-            timeoutSeconds: 60
-            periodSeconds: 10
+            timeoutSeconds: 600
+            periodSeconds: 100
             successThreshold: 1
             failureThreshold: 3
           readinessProbe:
@@ -1898,9 +1898,9 @@ objects:
               path: /status/ready
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 300
+            timeoutSeconds: 100
+            periodSeconds: 100
             successThreshold: 1
             failureThreshold: 3
     triggers:
@@ -2008,7 +2008,7 @@ objects:
             limits:
               # JA Bride:  Bumping down to 1G
               memory: "1G"
-              cpu: 250m
+              cpu: 90m
             requests:
               cpu: 50m
               memory: 250M
