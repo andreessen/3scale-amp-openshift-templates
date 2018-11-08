@@ -283,6 +283,7 @@ objects:
       3scale.component: backend
       3scale.component-element: cron
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: backend-cron
@@ -359,6 +360,7 @@ objects:
       3scale.component: backend
       3scale.component-element: redis
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: backend-redis
@@ -384,10 +386,10 @@ objects:
             -  "no"
           resources:
             limits:
-              cpu: 2000m
+              cpu: 500m
               memory: 32Gi
             requests:
-              cpu: 1000m
+              cpu: 250m
               memory: 1024Mi
           readinessProbe:
             exec:
@@ -431,6 +433,7 @@ objects:
       3scale.component: backend
       3scale.component-element: listener
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: backend-listener
@@ -486,10 +489,10 @@ objects:
           name: backend-listener
           resources:
             limits:
-              cpu: 1000m
+              cpu: 400m
               memory: 700Mi
             requests:
-              cpu: 500m
+              cpu: 200m
               memory: 550Mi
           livenessProbe:
             initialDelaySeconds: 30
@@ -610,6 +613,7 @@ objects:
       3scale.component: backend
       3scale.component-element: worker
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: backend-worker
@@ -665,10 +669,10 @@ objects:
           name: backend-worker
           resources:
             limits:
-              cpu: 1000m
+              cpu: 400m
               memory: 300Mi
             requests:
-              cpu: 150m
+              cpu: 100m
               memory: 50Mi
     triggers:
     - type: ConfigChange
@@ -726,6 +730,7 @@ objects:
       3scale.component: system
       3scale.component-element: redis
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-redis
@@ -752,9 +757,9 @@ objects:
           resources:
             limits:
               memory: 32Gi
-              cpu: 500m
+              cpu: 200m
             requests:
-              cpu: 150m
+              cpu: 100m
               memory: 256Mi
           terminationMessagePath: /dev/termination-log
           volumeMounts:
@@ -816,6 +821,7 @@ objects:
       3scale.component: system
       3scale.component-element: sphinx
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-sphinx
@@ -873,7 +879,7 @@ objects:
           name: system-sphinx
           resources:
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 512Mi
             requests:
               cpu: 80m
@@ -921,6 +927,7 @@ objects:
       3scale.component: system
       3scale.component-element: memcache
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-memcache
@@ -1101,6 +1108,7 @@ objects:
       3scale.component: apicast
       3scale.component-element: staging
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: apicast-staging
@@ -1235,6 +1243,7 @@ objects:
       3scale.component: apicast
       3scale.component-element: production
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: apicast-production
@@ -1290,10 +1299,10 @@ objects:
           name: apicast-production
           resources:
             limits:
-              cpu: 1000m
+              cpu: 250m
               memory: 128Mi
             requests:
-              cpu: 500m
+              cpu: 120m
               memory: 64Mi
           livenessProbe:
             httpGet:
@@ -1338,6 +1347,7 @@ objects:
       3scale.component: apicast
       3scale.component-element: wildcard-router
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: apicast-wildcard-router
@@ -1366,7 +1376,7 @@ objects:
             name: apicast-wildcard-router
             resources:
               limits:
-                cpu: 500m
+                cpu: 200m
                 memory: 64Mi
               requests:
                 cpu: 120m
@@ -1509,6 +1519,7 @@ objects:
       3scale.component: system
       3scale.component-element: app
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-app
@@ -1555,7 +1566,7 @@ objects:
           name: system-master
           resources:
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 800Mi
             requests:
               cpu: 50m
@@ -1565,8 +1576,8 @@ objects:
               port: master
             initialDelaySeconds: 40
             failureThreshold: 40
-            periodSeconds: 10
-            timeoutSeconds: 10
+            periodSeconds: 100
+            timeoutSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1577,8 +1588,8 @@ objects:
                 value: https
             initialDelaySeconds: 60
             failureThreshold: 10
-            periodSeconds: 30
-            timeoutSeconds: 10
+            periodSeconds: 300
+            timeoutSeconds: 100
           ports:
           - containerPort: 3002
             protocol: TCP
@@ -1595,7 +1606,7 @@ objects:
           name: system-provider
           resources:
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 800Mi
             requests:
               cpu: 50m
@@ -1605,8 +1616,8 @@ objects:
               port: provider
             initialDelaySeconds: 40
             failureThreshold: 40
-            periodSeconds: 10
-            timeoutSeconds: 10
+            periodSeconds: 100
+            timeoutSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1617,8 +1628,8 @@ objects:
                 value: https
             initialDelaySeconds: 60
             failureThreshold: 10
-            periodSeconds: 30
-            timeoutSeconds: 10
+            periodSeconds: 300
+            timeoutSeconds: 100
           ports:
           - containerPort: 3000
             protocol: TCP
@@ -1635,7 +1646,7 @@ objects:
           name: system-developer
           resources:
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 800Mi
             requests:
               cpu: 50m
@@ -1645,8 +1656,8 @@ objects:
               port: developer
             initialDelaySeconds: 40
             failureThreshold: 40
-            periodSeconds: 10
-            timeoutSeconds: 10
+            periodSeconds: 100
+            timeoutSeconds: 100
           readinessProbe:
             httpGet:
               path: /check.txt
@@ -1657,8 +1668,8 @@ objects:
                 value: https
             initialDelaySeconds: 60
             failureThreshold: 10
-            periodSeconds: 30
-            timeoutSeconds: 10
+            periodSeconds: 300
+            timeoutSeconds: 100
           ports:
           - containerPort: 3001
             protocol: TCP
@@ -1703,6 +1714,7 @@ objects:
       3scale.component: system
       3scale.component-element: resque
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-resque
@@ -1790,6 +1802,7 @@ objects:
       3scale.component: system
       3scale.component-element: sidekiq
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: system-sidekiq
@@ -1828,7 +1841,7 @@ objects:
           name: system-sidekiq
           resources:
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 2Gi
             requests:
               cpu: 100m
@@ -1876,6 +1889,7 @@ objects:
       3scale.component: system
       3scale.component-element: mysql
   spec:
+    paused: true
     strategy:
       type: Recreate
     triggers:
@@ -2091,6 +2105,7 @@ objects:
       3scale.component: zync
     name: zync
   spec:
+    paused: true
     replicas: 1
     selector:
       deploymentConfig: zync
@@ -2117,7 +2132,7 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: 1
+              cpu: 200m
               memory: 512Mi
             requests:
               cpu: 150m
@@ -2147,9 +2162,9 @@ objects:
               path: /status/live
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 10
+            initialDelaySeconds: 60
             timeoutSeconds: 60
-            periodSeconds: 10
+            periodSeconds: 100
             successThreshold: 1
             failureThreshold: 10
           readinessProbe:
@@ -2159,7 +2174,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 100
             timeoutSeconds: 10
-            periodSeconds: 10
+            periodSeconds: 100
             successThreshold: 1
             failureThreshold: 3
     triggers:
@@ -2217,6 +2232,7 @@ objects:
       3scale.component: zync
       3scale.component-element: database
   spec:
+    paused: true
     strategy:
       type: Recreate
     triggers:
